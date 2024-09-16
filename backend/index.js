@@ -7,9 +7,12 @@ dotenv.config(); // To use the .env file
 
 import dbConnect from "./db/dbConnect.js";
 
-import authRouter from "./routes/authRouter.js";
+import authRouter from "./routes/authUser.js";
 
+
+app.use(express.json());
 app.use("/api/auth",authRouter)
+
 
 app.listen(port, () => {
     dbConnect();
