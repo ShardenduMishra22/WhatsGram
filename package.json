@@ -1,10 +1,11 @@
 {
   "name": "whatsgram",
   "version": "1.0.0",
-  "description": "This is a real time chatting application",
+  "description": "This is a real-time chatting application",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "jsr"
+    "dev": "nodemon index.js"
   },
   "author": "Shardendu Mishra",
   "license": "ISC",
