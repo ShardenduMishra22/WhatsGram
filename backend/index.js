@@ -1,17 +1,17 @@
+import authRouter from "./routes/authUser.js";
+import dbConnect from "./db/dbConnect.js";
 import express from "express";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+
+const port = process.env.PORT || 3000
 const app = express();
 
-import dotenv from "dotenv";
-const port = process.env.PORT || 3000
 dotenv.config(); // To use the .env file
 
-import dbConnect from "./db/dbConnect.js";
-
-import authRouter from "./routes/authUser.js";
-
-
+app.use("/api/auth",authRouter);
+app.use(cookieParser());
 app.use(express.json());
-app.use("/api/auth",authRouter)
 
 
 app.listen(port, () => {
