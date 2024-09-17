@@ -13,6 +13,9 @@ app.use("/api/auth",authRouter);
 app.use(cookieParser());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+    res.send(JSON.parse('{"message": "Pulling Up Finna get Busy"}'))
+})
 
 app.listen(port, () => {
     dbConnect();
