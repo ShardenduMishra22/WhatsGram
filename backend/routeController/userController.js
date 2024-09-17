@@ -1,6 +1,5 @@
 import bcryptjs from 'bcryptjs';
-import User from '../models/userModel.js';
-import jwt from 'jsonwebtoken';
+import User from '../Models/userModel.js'
 import jwToken from '../utils/jwt.js';
 
 export const userRegister = async (req,res) => {    
@@ -17,7 +16,6 @@ export const userRegister = async (req,res) => {
         const password = UserBody.password;
         const gender = UserBody.gender;
         const profilepic = UserBody.profilepic;
-
 
         // User = await User......... 
         // this will give an error because 

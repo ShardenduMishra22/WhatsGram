@@ -3,15 +3,15 @@ import mongoose from "mongoose";
 const conversationSchema = new mongoose.Schema(
     {
         participants: [{
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true
         }],
         messages: [
             {
-                types : mongoose.Schema.Types.ObjectId,
-                ref : 'Message',
-                default : []
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Message',
+                default: []
             }
         ]
     },
