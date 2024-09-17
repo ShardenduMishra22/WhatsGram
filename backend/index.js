@@ -20,6 +20,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/message", messageRouter);
 app.use('/api/user',userRouter);
 
+
 app.get("/", (req, res) => {
     res.send({ message: "Pulling Up Finna get Busy" });
 });
