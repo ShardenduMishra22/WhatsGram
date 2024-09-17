@@ -1,5 +1,6 @@
-import authRouter from "./routes/authUser.js";
 import messageRouter from "./routes/messageUser.js";
+import authRouter from "./routes/authUser.js";
+import userRouter from "./routes/chatUser.js";
 import dbConnect from "./db/dbConnect.js";
 import cookieParser from "cookie-parser";
 import bodyParser from 'body-parser';
@@ -17,6 +18,7 @@ app.use(cookieParser()); // Ensure this is used before your routes
 
 app.use("/api/auth", authRouter);
 app.use("/api/message", messageRouter);
+app.use('/api/user',userRouter);
 
 app.get("/", (req, res) => {
     res.send({ message: "Pulling Up Finna get Busy" });

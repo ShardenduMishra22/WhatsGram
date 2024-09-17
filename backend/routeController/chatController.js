@@ -1,8 +1,6 @@
 import Conversation from '../Models/conversationModel.js';
 import User from '../Models/userModel.js';
 
-
-
 export const getUsersBySeach = async (req,res) => {
     try{
         // You can't write res.params.search because 
@@ -22,8 +20,13 @@ export const getUsersBySeach = async (req,res) => {
                 $and : [
                     {
                         $or : [
-                            {username : { $regex :"*" + search + "*", $options : 'i'}},
-                            {fullname : { $regex :"*" + search + "*", $options : 'i'}},
+                            {username : { $regex: ".*" + search + ".*", $options: 'i' }},
+                            {fullname : { $regex: ".*" + search + ".*", $options: 'i' }}
+
+
+                            // this is wrong , there is an error in regex 
+                            // {username : { $regex :"*" + search + "*", $options : 'i'}},
+                            // {fullname : { $regex :"*" + search + "*", $options : 'i'}},
                         ]
                     },
                     {
@@ -47,92 +50,53 @@ export const getUsersBySeach = async (req,res) => {
     }
 }
 
-export const getCurrentChatters = async (req,res) => {
-    try{
-        const currenUserId = req.user._id;
+export const getCurrentChatters = async (req, res) => {
+    try {
+        const currenUserId = req.user._id; // Ensure the correct variable name is used here
         const currentChatters = await Conversation.find(
             {
-                participants : currenUserId
+                participants: currenUserId
             }
         ).sort(
             {
-                updatedAt : -1
+                updatedAt: -1
             }
-        )
+        );
 
-        if(!currentChatters || currentChatters.length == 0){
-            res.status(200).send({
+        if (!currentChatters || currentChatters.length === 0) {
+            return res.status(200).send({
                 success: true,
                 message: "No Chatters Found"
-            })
+            });
         }
-
-        // const partcipantsIDS = currentChatters.reduce((ids, conversation) => {
-        //     const otherParticipents = conversation.participants.filter(id => id !== currenUserId); // Filter out the current user's ID
-        //     return [...ids, ...otherParticipents]; // Merge the accumulated ids with the filtered participants
-        // }, []);
 
         let partcipantsIDS = [];
 
-        currenTChatters.forEach(conversation => {
+        currentChatters.forEach(conversation => {
             conversation.participants.forEach(id => {
-                if (id !== currentUserID) {
+                if (id.toString() !== currenUserId.toString()) { // Ensure the correct variable name is used here
                     partcipantsIDS.push(id);
                 }
             });
         });
 
-        const otherParticipentsIDS = partcipantsIDS.filter(id => id.toString() !== currentUserID.toString());
+        const otherParticipentsIDS = partcipantsIDS.filter(id => id.toString() !== currenUserId.toString());
 
-        // searching in DB
-        const user = await User.find({_id:{$in:otherParticipentsIDS}}).select("-password").select("-email");
+        // Searching in DB
+        const users = await User.find({ _id: { $in: otherParticipentsIDS } }).select("-password -email");
 
-        const users = otherParticipentsIDS.map(id => user.find(user => user._id.toString() === id.toString()));
-        res.status(200).send(users)
+        const userDetails = otherParticipentsIDS.map(id => users.find(user => user._id.toString() === id.toString()));
 
-    }catch(error){
+        res.status(200).send({
+            success: true,
+            data: userDetails
+        });
+
+    } catch (error) {
         res.status(500).send({
             success: false,
-            message: error
-        })
+            message: error.message
+        });
         console.log(error);
     }
-}
-
-
-// ### 1. **What `reduce` Does:**
-// `reduce` is used to accumulate values in an array into a single result. It takes two arguments:
-// - A function `(accumulator, currentValue)`.
-// - An initial value (in this case, an empty array `[]`).
-
-// For each item in the array, it performs the function on the `accumulator` and the `currentValue`.
-
-// ### 2. **Understanding the Code:**
-// - `currenTChatters` is an array of **conversations**.
-// - Each conversation has a `participants` field, which is an array of participant IDs.
-  
-// Now, let's walk through the code:
-
-// ```js
-// const partcipantsIDS = currenTChatters.reduce((ids, conversation) => {
-//     const otherParticipents = conversation.participants.filter(id => id !== currentUserID); // Filter out the current user's ID
-//     return [...ids, ...otherParticipents]; // Merge the accumulated ids with the filtered participants
-// }, []);
-// ```
-
-// ### Step-by-Step Explanation:
-
-// 1. **Initial Value:**
-//    - `ids` starts as an empty array `[]` (the initial value).
-
-// 2. **For Each Conversation:**
-//    - `conversation.participants.filter(id => id !== currentUserID)`:
-//      - This filters out the current user's ID from the conversation's participants.
-//      - It leaves only the **other participants**.
-
-// 3. **Accumulation:**
-//    - `return [...ids, ...otherParticipents];`:
-//      - It spreads the existing `ids` (accumulated participants) and the `otherParticipants` of this conversation into a new array, combining them.
-
-// ### What It Does:
-// - It loops through all conversations, collects the IDs of participants **other than the current user**, and accumulates them into one array `partcipantsIDS`.
+};
