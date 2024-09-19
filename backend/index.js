@@ -1,13 +1,13 @@
 import express from "express"
 import dotenv from 'dotenv'
-import dbConnect from "./DB/dbConnect.js";
-import authRouter from  './rout/authUser.js'
-import messageRouter from './rout/messageRout.js'
-import userRouter from './rout/userRout.js'
+import dbConnect from "./db/dbConnect.js";
+import authRouter from  './routes/authUser.js'
+import messageRouter from './routes/messageUser.js'
+import userRouter from './routes/chatUser.js'
 import cookieParser from "cookie-parser";
 import path from "path";
 import {app , server} from './Socket/socket.js'
-
+import cors from 'cors';
 
 // const __dirname = path.resolve();
 // app.use(express.static(path.join(__dirname,"/frontend/dist")))
@@ -16,7 +16,8 @@ dotenv.config();
 
 
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 app.use('/api/auth',authRouter)
 app.use('/api/message',messageRouter)

@@ -64,13 +64,25 @@ export const userRegister = async (req,res) => {
             });
         }
 
+        console.log(
+            "User Created:\n" +
+            `ID: ${newUser._id}\n` +
+            `Username: ${newUser.username}\n` +
+            `Full Name: ${newUser.fullname}\n` +
+            `Email: ${newUser.email}\n` +
+            `Profile Picture: ${newUser.profilepic}`
+        );
+          
+          
         res.status(201).send({
-            _id : newUser._id,
-            username : newUser.username,
-            fullname : newUser.fullname,
-            email : newUser.email,
-            profilepic : newUser.profilepic,
+            success: true,
+            _id: newUser._id,
+            username: newUser.username,
+            fullname: newUser.fullname,
+            email: newUser.email,
+            profilepic: newUser.profilepic,
         });
+        
 
     }catch(error){
         console.error(error);
