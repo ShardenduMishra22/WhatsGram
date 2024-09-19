@@ -1,34 +1,38 @@
-import messageRouter from "./routes/messageUser.js";
-import authRouter from "./routes/authUser.js";
-import userRouter from "./routes/chatUser.js";
-import dbConnect from "./db/dbConnect.js";
+import express from "express"
+import dotenv from 'dotenv'
+import dbConnect from "./DB/dbConnect.js";
+import authRouter from  './rout/authUser.js'
+import messageRouter from './rout/messageRout.js'
+import userRouter from './rout/userRout.js'
 import cookieParser from "cookie-parser";
-import bodyParser from 'body-parser';
-import express from "express";
-import dotenv from "dotenv";
-
-dotenv.config(); // To use the .env file
-
-const port = process.env.PORT || 3000;
-const app = express();
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(cookieParser()); // Ensure this is used before your routes
-
-app.use("/api/auth", authRouter);
-app.use("/api/message", messageRouter);
-app.use('/api/user',userRouter);
+import path from "path";
+import {app , server} from './Socket/socket.js'
 
 
-app.get("/", (req, res) => {
-    res.send({ message: "Pulling Up Finna get Busy" });
-});
+// const __dirname = path.resolve();
+// app.use(express.static(path.join(__dirname,"/frontend/dist")))
 
-app.listen(port, () => {
+dotenv.config();
+
+
+app.use(express.json());
+app.use(cookieParser())
+
+app.use('/api/auth',authRouter)
+app.use('/api/message',messageRouter)
+app.use('/api/user',userRouter)
+
+
+app.get("*",(req,res)=>{
+    res.sendFile(path.join(__dirname,"frontend","dist","index.html"))
+})
+
+const PORT = process.env.PORT || 3000
+
+server.listen(PORT,()=>{
     dbConnect();
-    console.log(`Server is running on port http://localhost:${port}`);
-});
+    console.log(`Working at ${PORT}`);
+})
 
 
 // import authRouter from "./routes/authUser.js";

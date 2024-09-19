@@ -1,10 +1,10 @@
 
-function home() {
+function Home() {
   return (
     <div>
-      
+          
     </div>
   )
 }
 
-export default home
+export default Home;

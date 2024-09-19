@@ -1,6 +1,7 @@
 import Conversation from "../Models/conversationModel.js";
 import Message from "../Models/messageModel.js";
 import mongoose from "mongoose";
+import { getReceiverSocketId } from "../Socket/socket.js";
 
 export const sendMessage = async (req, res) => {
     try {
@@ -53,6 +54,10 @@ export const sendMessage = async (req, res) => {
         await Promise.all([newMessage.save(), chat.save()]);
 
         // SOCKET.IO here
+        const reciverSocketId = getReceiverSocketId(reciverId);
+        if(reciverSocketId){
+            io.to(reciverSocketId).emit("newMessage",newMessages)
+        }
 
         res.status(200).send({
             success: true,
