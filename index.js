@@ -22,11 +22,11 @@ app.use('/api/message', messageRouter);
 app.use('/api/user', userRouter);
 
 // Serve static front-end from 'dist'
-app.use(express.static(path.join(__dirname, "/frontend/dist")));
+app.use(express.static(path.join(__dirname, "/dist")));
 
 // Serve front-end for all other routes
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 // Start server
