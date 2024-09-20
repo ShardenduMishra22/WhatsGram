@@ -1,8 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-    background: linear-gradient(to bottom, #1a237e, #6a1b9a);
-    min-height: 100vh; /* Ensures the body is at least as tall as the viewport */
-}

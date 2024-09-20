@@ -1,15 +1,14 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
 
-// db in another continent
 const dbConnect = async () => {
-    try{
-        const connect = await mongoose.connect(process.env.MONGO_URI)
-        console.log(`MongoDB Connected Atlas DataBase of Shardendu Mishra`)
-    }catch (error){
-        return console.error(`Error: ${error.message}`)
+    try {
+        await mongoose.connect('mongodb+srv://shardendumishra22:shardendu1234@cluster0.lsaay.mongodb.net');
+        console.log("DB connected successfully");
+    } catch (error) {
+        console.error("DB connection error:", error);
     }
-}
+};
 
 export default dbConnect;

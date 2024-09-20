@@ -1,3 +1,0 @@
-# WhatsGram
-
-Somethings Cooking !!
